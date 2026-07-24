@@ -10,9 +10,9 @@ import (
 func Router() *gin.Engine {
 	r := gin.Default()
 
-	user := r.Group("/")
+	user := r.Group("/user")
 	{
-
+		user.GET("/user/SelectList", (&controllers.UserController{}).SelectList)
 		user.GET("/user/info", controllers.UserController{}.SelectUserSuccess)
 		user.GET("/hello", func(c *gin.Context) {
 			//c.String(200, "Hello World")
@@ -25,7 +25,7 @@ func Router() *gin.Engine {
 			fmt.Println("Post")
 			fmt.Println(context)
 		})
-
+		user.GET("/user/get/:id", (&controllers.UserController{}).SelectUserString)
 		user.DELETE("/user/delete/{id}", func(context *gin.Context) {
 			context.String(200, "User delete"+context.Param("id"))
 			fmt.Println("Delete")
@@ -39,7 +39,9 @@ func Router() *gin.Engine {
 
 	order := r.Group("/order")
 	{
-		order.GET("/list", (&controllers.OrderController{}).SelectList)
+		order.GET("/list/info", (&controllers.OrderController{}).SelectList)
+		order.POST("/list/form", (&controllers.OrderController{}).SelectListFrom)
+		order.POST("/list/panic", (&controllers.OrderController{}).TestPanic)
 	}
 
 	return r

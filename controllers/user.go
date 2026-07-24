@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"awesomeProject/model"
+	"awesomeProject/pkg/logger"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,12 +17,12 @@ type User struct {
 type UserController struct {
 }
 
-func (u *UserController) TableName() string {
-	return "users"
-}
-
-func (u *UserController) SelectUserString() string {
-	return "user list"
+func (u *UserController) SelectUserString(c *gin.Context) {
+	id := c.Param("id")
+	idstr, _ := strconv.Atoi(id)
+	user, _ := model.User{}.GetUserTest(idstr)
+	ReturnSuccess(c, true, 200, "Success", user, 0)
+	//return user
 }
 
 func (u UserController) SelectUserSuccess(c *gin.Context) {
@@ -33,5 +36,6 @@ func (u *UserController) SelectUserError(c *gin.Context) {
 }
 
 func (u *UserController) SelectList(c *gin.Context) {
+	logger.Write("日志信息", "user")
 	ReturnSuccess(c, true, 200, "Success", nil, 0)
 }
