@@ -13,6 +13,7 @@ func Router() *gin.Engine {
 	user := r.Group("/user")
 	{
 		user.GET("/user/SelectList", (&controllers.UserController{}).SelectList)
+		user.GET("/user/SelectLists", (&controllers.UserController{}).SelectLists)
 		user.GET("/user/info", controllers.UserController{}.SelectUserSuccess)
 		user.GET("/hello", func(c *gin.Context) {
 			//c.String(200, "Hello World")
