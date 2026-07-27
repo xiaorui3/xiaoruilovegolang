@@ -41,6 +41,7 @@ func (u *UserController) SelectList(c *gin.Context) {
 	ReturnSuccess(c, true, 200, "Success", nil, 0)
 }
 
+// ... existing code ...
 func (u *UserController) SelectLists(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -51,8 +52,11 @@ func (u *UserController) SelectLists(c *gin.Context) {
 
 	paramId := c.Param("id")
 	postFormId := c.PostForm("id")
+
 	jsonData := make(map[string]interface{})
-	_ = c.BindJSON(&jsonData)
+	if c.Request.Method == "POST" || c.Request.Method == "PUT" {
+		_ = c.BindJSON(&jsonData)
+	}
 
 	var id int = -1
 
