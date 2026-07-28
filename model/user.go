@@ -31,3 +31,9 @@ func (u User) GetUserTestToDataBaseTable(id int) ([]User, error) {
 	err := dao.Db.Raw("select id, name from user where id = ?", id).Scan(&jjj).Error
 	return jjj, err
 }
+
+func (u User) SelectTestTableIdtoName(id int) (string, error) {
+	var name string
+	err := dao.Db.Raw("select name from user where id = ?", id).Row().Scan(&name)
+	return name, err
+}

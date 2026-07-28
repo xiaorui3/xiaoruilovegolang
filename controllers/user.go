@@ -10,11 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-}
-
 type UserController struct {
 }
 
@@ -24,6 +19,21 @@ func (u *UserController) SelectUserString(c *gin.Context) {
 	user, _ := model.User{}.GetUserTest(idstr)
 	ReturnSuccess(c, true, 200, "Success", user, 0)
 	//return user
+}
+
+func (u *UserController) SelectUserIdToName(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		ReturnError(c, false, 400, "无效的ID参数", nil, 0)
+		return
+	}
+
+	name, err := model.User{}.SelectTestTableIdtoName(id)
+	if err != nil {
+		ReturnError(c, false, 500, "查询失败", nil, 0)
+		return
+	}
+	ReturnSuccess(c, true, 200, "Success", name, 0)
 }
 
 func (u UserController) SelectUserSuccess(c *gin.Context) {
